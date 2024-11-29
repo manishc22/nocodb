@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { StringOrNullType } from 'nocodb-sdk';
+
 interface ShareBase {
   uuid?: string
   url?: string
   role?: string
-  fk_custom_url_id?: string
+  fk_custom_url_id?: StringOrNullType
 }
 
 enum ShareBaseRole {
@@ -52,7 +54,7 @@ const loadBase = async () => {
       uuid: res.uuid,
       url: res.url,
       role: res.roles,
-      fk_custom_url_id: res?.fk_custom_url_id,
+      fk_custom_url_id: res?.fk_custom_url_id || null,
     }
   } catch (e: any) {
     message.error(await extractSdkResponseErrorMsg(e))

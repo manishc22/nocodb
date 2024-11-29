@@ -2651,6 +2651,10 @@
                     "roles": {
                       "type": "string",
                       "example": "viewer"
+                    },
+                    "fk_custom_url_id": {
+                      "$ref": "#/components/schemas/StringOrNull",
+                      "description": "ID of custom url"
                     }
                   }
                 },
