@@ -345,7 +345,6 @@ export default class Base implements BaseType {
       'uuid',
       'password',
       'roles',
-      'fk_custom_url_id',
     ]);
 
     // get existing cache

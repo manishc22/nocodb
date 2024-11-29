@@ -41,6 +41,7 @@ import {
 } from '~/utils/modelUtils';
 import { CustomUrl, LinkToAnotherRecordColumn } from '~/models';
 import { cleanCommandPaletteCache } from '~/helpers/commandPaletteHelpers';
+import { isEE } from '~/utils';
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -1246,7 +1247,7 @@ export default class View implements ViewType {
       MetaTable.VIEWS,
       {
         uuid: null,
-        fk_custom_url_id: null,
+        ...(isEE ? { fk_custom_url_id: null } : {}),
       },
       viewId,
     );
@@ -1255,7 +1256,7 @@ export default class View implements ViewType {
 
     await NocoCache.update(`${CacheScope.VIEW}:${viewId}`, {
       uuid: null,
-      fk_custom_url_id: null,
+      ...(isEE ? { fk_custom_url_id: null } : {}),
     });
   }
 
@@ -1286,7 +1287,7 @@ export default class View implements ViewType {
       'password',
       'meta',
       'uuid',
-      'fk_custom_url_id',
+      ...(isEE ? ['fk_custom_url_id'] : []),
       ...(includeCreatedByAndUpdateBy ? ['owned_by', 'created_by'] : []),
     ]);
 
@@ -1419,7 +1420,7 @@ export default class View implements ViewType {
     // on update, delete any optimised single query cache
     await View.clearSingleQueryCache(context, view.fk_model_id, [view], ncMeta);
 
-    if (view.fk_custom_url_id) {
+    if (isEE && view.fk_custom_url_id) {
       CustomUrl.delete({ id: view.fk_custom_url_id as string }).catch(() => {
         logger.error(`Failed to delete custom urls of viewId: ${view.id}`);
       });

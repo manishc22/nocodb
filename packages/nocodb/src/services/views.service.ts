@@ -264,7 +264,7 @@ export class ViewsService {
       viewId: string;
       sharedView: SharedViewReqType & {
         custom_url_path?: string;
-        original_url?: string
+        original_url?: string;
       };
       user: UserType;
       req: NcRequest;
