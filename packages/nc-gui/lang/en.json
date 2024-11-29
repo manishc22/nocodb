@@ -650,7 +650,7 @@
     "unlockThisVieToMakeChanges": "Unlock this view to make changes",
     "yourBaseRole": "Your base role",
     "lockedByUser": "Locked by {user}",
-    "thisPageDoesNotExists": "This page doesn’t exist",
+    "thisPageDoesNotExist": "This page doesn’t exist",
     "customUrl": "Custom URL"
   },
   "labels": {
