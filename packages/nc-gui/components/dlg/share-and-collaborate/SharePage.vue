@@ -415,7 +415,7 @@ const copyCustomUrl = async (custUrl = '') => {
                 </div>
                 <NcTooltip class="flex items-center">
                   <template #title> {{ $t('tooltip.surveyFormInfo') }}</template>
-                  <GeneralIcon icon="info" class="flex-none text-gray-600 cursor-pointer"></GeneralIcon>
+                  <GeneralIcon icon="info" class="flex-none text-gray-400 cursor-pointer"></GeneralIcon>
                 </NcTooltip>
               </div>
               <a-switch
@@ -454,7 +454,7 @@ const copyCustomUrl = async (custUrl = '') => {
                     {{ $t('tooltip.preFillFormInfo') }}
                   </div>
                 </template>
-                <GeneralIcon icon="info" class="flex-none text-gray-600 cursor-pointer"></GeneralIcon>
+                <GeneralIcon icon="info" class="flex-none text-gray-400 cursor-pointer"></GeneralIcon>
               </NcTooltip>
             </div>
             <a-switch

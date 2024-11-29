@@ -650,7 +650,8 @@
     "unlockThisVieToMakeChanges": "Unlock this view to make changes",
     "yourBaseRole": "Your base role",
     "lockedByUser": "Locked by {user}",
-    "thisPageNoLongerExists": "This page no longer exists"
+    "thisPageNoLongerExists": "This page no longer exists",
+    "customUrl": "Custom URL"
   },
   "labels": {
     "snapshotCreationFailed": "Snapshot creation failed",
@@ -1864,7 +1865,9 @@
       "somethingWentWrong": "Something went wrong",
       "draggedContentIsNotTypeOfImage": "Dragged content is not type of image",
       "fieldToParseImageData": "Field to parse image data",
-      "someOfTheRequiredFieldsAreEmpty": "Some of the required fields are empty"
+      "someOfTheRequiredFieldsAreEmpty": "Some of the required fields are empty",
+      "unsupportedCharacter": "Unsupported character: {char}",
+      "unsupportedCharacters": "Unsupported characters: {char}"
     },
     "toast": {
       "exportMetadata": "Base metadata exported successfully",
