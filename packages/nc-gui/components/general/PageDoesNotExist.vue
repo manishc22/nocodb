@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full grid place-items-center text-center">
+  <div class="nc-h-screen grid place-items-center text-center">
     <div class="flex flex-col items-center gap-6">
       <slot name="icon">
         <img width="48" alt="NocoDB" src="~/assets/img/icons/256x256.png" />

@@ -13,6 +13,8 @@ import type {
 import { UITypes, ViewTypes } from 'nocodb-sdk'
 
 export function useSharedView() {
+  const router = useRouter()
+
   const nestedFilters = ref<(FilterType & { status?: 'update' | 'delete' | 'create'; parentId?: string })[]>([])
 
   const { appInfo } = useGlobal()
@@ -70,6 +72,7 @@ export function useSharedView() {
         'xc-password': localPassword ?? password.value,
       },
     })
+
     try {
       allowCSVDownload.value = parseProp(viewMeta.meta)?.allowCSVDownload
     } catch {
@@ -421,6 +424,15 @@ export function useSharedView() {
     } as RequestParams)
   }
 
+  const triggerNotFound = () => {
+    const currentQuery = { ...router.currentRoute.value.query, ncNotFound: 'true' }
+
+    router.push({
+      path: router.currentRoute.value.path,
+      query: currentQuery,
+    })
+  }
+
   return {
     sharedView,
     loadSharedView,
@@ -441,5 +453,6 @@ export function useSharedView() {
     formColumns,
     allowCSVDownload,
     fetchCount,
+    triggerNotFound,
   }
 }
