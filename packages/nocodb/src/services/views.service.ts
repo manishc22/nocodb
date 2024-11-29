@@ -262,7 +262,10 @@ export class ViewsService {
     context: NcContext,
     param: {
       viewId: string;
-      sharedView: SharedViewReqType;
+      sharedView: SharedViewReqType & {
+        custom_url_path?: string;
+        original_url?: string
+      };
       user: UserType;
       req: NcRequest;
     },

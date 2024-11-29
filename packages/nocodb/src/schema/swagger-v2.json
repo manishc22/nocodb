@@ -2794,7 +2794,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SharedBaseReq"
+                "allOf":[
+                  { 
+                    "$ref": "#/components/schemas/SharedBaseReq"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "original_url": {
+                        "$ref": "#/components/schemas/StringOrNull",
+                        "description": "Original url to redirect from custom url path"
+                      },
+                      "custom_url_path": {
+                        "$ref": "#/components/schemas/StringOrNull",
+                        "description": "Custom url path"
+                      }
+                    }
+                  }
+                ]
               },
               "examples": {
                 "Example 1": {
@@ -5301,7 +5318,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SharedViewReq"
+                "allOf":[
+                  { 
+                    "$ref": "#/components/schemas/SharedViewReq"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "original_url": {
+                        "$ref": "#/components/schemas/StringOrNull",
+                        "description": "Original url to redirect from custom url path"
+                      },
+                      "custom_url_path": {
+                        "$ref": "#/components/schemas/StringOrNull",
+                        "description": "Custom url path"
+                      }
+                    }
+                  }
+                ]
               }
             }
           },
@@ -19699,14 +19733,6 @@
             "type": "string",
             "description": "The role given the target user",
             "example": "editor"
-          },
-          "original_url": {
-            "$ref": "#/components/schemas/StringOrNull",
-           "description": "Original url user to redirect from custom url path"
-          },
-          "custom_url_path": {
-            "$ref": "#/components/schemas/StringOrNull",
-            "description": "Custom url path"
           }
         },
         "x-stoplight": {
@@ -19867,14 +19893,6 @@
           "password": {
             "$ref": "#/components/schemas/StringOrNull",
             "description": "Password to restrict access"
-          },
-          "original_url": {
-            "$ref": "#/components/schemas/StringOrNull",
-           "description": "Original url user to redirect from custom url path"
-          },
-          "custom_url_path": {
-            "$ref": "#/components/schemas/StringOrNull",
-            "description": "Custom url path"
           }
         },
         "x-stoplight": {
