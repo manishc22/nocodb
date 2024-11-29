@@ -10,7 +10,7 @@ definePageMeta({
 
 const route = useRoute()
 
-const { loadSharedView , triggerNotFound} = useSharedView()
+const { loadSharedView, triggerNotFound } = useSharedView()
 
 const showPassword = ref(false)
 

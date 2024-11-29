@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { StringOrNullType } from 'nocodb-sdk';
+import type { StringOrNullType } from 'nocodb-sdk'
 
 interface ShareBase {
   uuid?: string
