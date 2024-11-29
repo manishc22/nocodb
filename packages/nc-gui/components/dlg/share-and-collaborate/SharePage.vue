@@ -358,7 +358,7 @@ const copyCustomUrl = async (custUrl = '') => {
           :dashboard-url="dashboardBaseUrl"
           :copy-custom-url="copyCustomUrl"
           :search-query="preFillFormSearchParams && activeView?.type === ViewTypes.FORM ? `?${preFillFormSearchParams}` : ''"
-          @update-shared-view="updateSharedView"
+          @update-custom-url="updateSharedView"
         />
         <div class="flex flex-col justify-between mt-1 py-2 px-3 bg-gray-50 rounded-md">
           <div class="flex flex-row items-center justify-between">

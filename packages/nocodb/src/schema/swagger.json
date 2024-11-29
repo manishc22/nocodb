@@ -24327,6 +24327,10 @@
             "description": "Base Title",
             "example": "my-base",
             "type": "string"
+          },
+          "fk_custom_url_id": {
+            "$ref": "#/components/schemas/StringOrNull",
+            "description": "ID of custom url"
           }
         },
         "x-stoplight": {
@@ -24814,6 +24818,14 @@
             "type": "string",
             "description": "The role given the target user",
             "example": "editor"
+          },
+          "original_url": {
+            "$ref": "#/components/schemas/StringOrNull",
+           "description": "Original url user to redirect from custom url path"
+          },
+          "custom_url_path": {
+            "$ref": "#/components/schemas/StringOrNull",
+            "description": "Custom url path"
           }
         },
         "x-stoplight": {
@@ -26367,7 +26379,7 @@
           },
           "fk_custom_url_id": {
             "$ref": "#/components/schemas/StringOrNull",
-            "description": "Custom url id of view"
+            "description": "ID of custom url"
           }
         },
         "required": ["fk_model_id", "show", "title", "type"],
