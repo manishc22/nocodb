@@ -1765,7 +1765,8 @@
       "thisFeatureIsOnlyAvailableInEnterpriseEdition": "This feature is only available in enterprise edition",
       "yourCurrentRoleIs": "Your current role is",
       "pleaseRequestAccessForView": "Please request for higher permission from the Admin / Base owner / Workspace owner to get access to this {viewName}",
-      "preventHideAllOptions": "You cannot hide all options if field is required"
+      "preventHideAllOptions": "You cannot hide all options if field is required",
+      "valueMustBeAtMostCharLong": "Value must be at most {length} characters long"
     },
     "error": {
       "manualTriggerHook": "Manual hooks can't be disabled",
