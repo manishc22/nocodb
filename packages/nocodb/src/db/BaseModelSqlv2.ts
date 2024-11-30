@@ -123,7 +123,7 @@ export async function getColumnName(
 ) {
   if (
     !isCreatedOrLastModifiedTimeCol(column) &&
-    !isCreatedOrLastModifiedByCol(column)
+    !isCreatedOrLastModifiedByCol(column) && !isOrderCol(column)
   )
     return column.column_name;
   columns =
@@ -159,6 +159,13 @@ export async function getColumnName(
       );
       if (lastModifiedBySystemCol) return lastModifiedBySystemCol.column_name;
       return column.column_name || 'updated_by';
+    }
+    case UITypes.Order: {
+      const orderSystemCol = columns.find(
+        (col) => col.system && col.uidt === UITypes.Order,
+      );
+      if (orderSystemCol) return orderSystemCol.column_name;
+      return column.column_name || 'order';
     }
     default:
       return column.column_name;
@@ -243,11 +250,13 @@ class BaseModelSqlv2 {
       getHiddenColumn = false,
       throwErrorIfInvalidParams = false,
       extractOnlyPrimaries = false,
+      extractOrderColumn = false
     }: {
       ignoreView?: boolean;
       getHiddenColumn?: boolean;
       throwErrorIfInvalidParams?: boolean;
       extractOnlyPrimaries?: boolean;
+      extractOrderColumn?: boolean
     } = {},
   ): Promise<any> {
     const qb = this.dbDriver(this.tnPath);
@@ -261,6 +270,7 @@ class BaseModelSqlv2 {
       getHiddenColumn,
       throwErrorIfInvalidParams,
       extractOnlyPrimaries,
+      extractOrderColumn,
     });
 
     await this.selectObject({
@@ -5538,6 +5548,16 @@ class BaseModelSqlv2 {
           col.system &&
           !allowSystemColumn &&
           col.uidt !== UITypes.ForeignKey
+        ) {
+          NcError.badRequest(
+            `Column "${col.title}" is system column and cannot be updated`,
+          );
+        }
+
+        if (
+          col.system &&
+          !allowSystemColumn &&
+          col.uidt !== UITypes.Order
         ) {
           NcError.badRequest(
             `Column "${col.title}" is system column and cannot be updated`,
