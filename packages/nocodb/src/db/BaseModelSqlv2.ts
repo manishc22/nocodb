@@ -5301,6 +5301,8 @@ class BaseModelSqlv2 {
     try {
       const columns = await this.model.getColumns(this.context);
 
+      let order = await this.getHighestOrderInTable();
+
       const insertedDatas = [];
       const updatedDatas = [];
 
@@ -5331,7 +5333,8 @@ class BaseModelSqlv2 {
         if (pkValues !== 'N/A' && pkValues !== undefined) {
           dataWithPks.push({ pk: pkValues, data });
         } else {
-          await this.prepareNocoData(data, true, cookie)
+          await this.prepareNocoData(data, true, cookie, null,order)
+          order++
           // const insertObj = this.handleValidateBulkInsert(data, columns);
           dataWithoutPks.push(data);
         }
@@ -5354,7 +5357,8 @@ class BaseModelSqlv2 {
           await this.prepareNocoData(data, false, cookie)
           toUpdate.push(data);
         } else {
-          await this.prepareNocoData(data, true, cookie)
+          await this.prepareNocoData(data, true, cookie, null, order)
+          order++
           // const insertObj = this.handleValidateBulkInsert(data, columns);
           toInsert.push(data);
         }
@@ -5683,14 +5687,16 @@ class BaseModelSqlv2 {
       if (!raw) {
         const columns = await this.model.getColumns(this.context);
 
+        const order = await this.getHighestOrderInTable();
+
         const nestedCols = columns.filter((c) => isLinksOrLTAR(c));
 
-        for (const d of datas) {
+        for (const [index,d] of datas.entries()) {
           const insertObj = await this.handleValidateBulkInsert(d, columns, {
             allowSystemColumn,
           });
 
-          await this.prepareNocoData(insertObj, true, cookie);
+          await this.prepareNocoData(insertObj, true, cookie, order + index);
 
           // prepare nested link data for insert only if it is single record insertion
           if (isSingleRecordInsertion) {
@@ -5712,8 +5718,10 @@ class BaseModelSqlv2 {
       } else {
         await this.model.getColumns(this.context);
 
+        const order = await this.getHighestOrderInTable();
+
         await Promise.all(
-          insertDatas.map((d) => this.prepareNocoData(d, true, cookie)),
+          insertDatas.map(async (d, i)  => await this.prepareNocoData(d, true, cookie, null, order + i)),
         );
       }
 
