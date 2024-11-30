@@ -6,7 +6,6 @@ import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone';
 import equal from 'fast-deep-equal';
 import {
-  AppEvents,
   AuditOperationSubTypes,
   AuditOperationTypes,
   ButtonActionsType,
@@ -28,11 +27,11 @@ import type { SortType } from 'nocodb-sdk';
 import type { Knex } from 'knex';
 import type LookupColumn from '~/models/LookupColumn';
 import type { XKnex } from '~/db/CustomKnex';
+import type CustomKnex from '~/db/CustomKnex';
 import type {
   XcFilter,
   XcFilterWithAlias,
 } from '~/db/sql-data-mapper/lib/BaseModel';
-import type CustomKnex from '~/db/CustomKnex';
 import type { NcContext } from '~/interface/config';
 import type {
   BarcodeColumn,
@@ -44,7 +43,6 @@ import type {
   SelectOption,
   User,
 } from '~/models';
-import { nocoExecute } from '~/utils';
 import {
   Audit,
   BaseUser,
@@ -58,6 +56,7 @@ import {
   Source,
   View,
 } from '~/models';
+import { getAliasGenerator, nocoExecute } from '~/utils';
 import formulaQueryBuilderv2 from '~/db/formulav2/formulaQueryBuilderv2';
 import genRollupSelectv2 from '~/db/genRollupSelectv2';
 import conditionV2 from '~/db/conditionV2';
@@ -72,9 +71,7 @@ import { HANDLE_WEBHOOK } from '~/services/hook-handler.service';
 import { extractProps } from '~/helpers/extractProps';
 import { defaultLimitConfig } from '~/helpers/extractLimitAndOffset';
 import generateLookupSelectQuery from '~/db/generateLookupSelectQuery';
-import { getAliasGenerator } from '~/utils';
 import applyAggregation from '~/db/aggregation';
-import { extractMentions } from '~/utils/richTextHelper';
 import { chunkArray } from '~/utils/tsUtils';
 
 dayjs.extend(utc);
@@ -6863,6 +6860,28 @@ class BaseModelSqlv2 {
     }
   }
 
+  protected async getHighestOrderInTable() {
+    const orderColumn = this.model.columns.find(
+      (c) => c.uidt === UITypes.Order,
+    );
+
+    if (!orderColumn) {
+      return null;
+    }
+
+    const step = '1.00000000000000000000';
+
+    const orderQuery = await this.dbDriver(this.tnPath)
+      .max(`${orderColumn.column_name} as max_order`)
+      .first();
+
+    const order = orderQuery ? orderQuery['max_order'] || '0' : '0';
+
+    const nextOrder = (parseFloat(order) + parseFloat(step)).toFixed(20);
+
+    return nextOrder;
+  }
+
   // method for validating otpions if column is single/multi select
   protected async validateOptions(
     column: Column<any>,
@@ -9779,6 +9798,7 @@ class BaseModelSqlv2 {
           UITypes.LastModifiedTime,
           UITypes.CreatedBy,
           UITypes.LastModifiedBy,
+          UITypes.Order,
         ].includes(column.uidt)
       )
         continue;
@@ -9789,6 +9809,9 @@ class BaseModelSqlv2 {
             data[column.column_name] = this.now();
           } else if (column.uidt === UITypes.CreatedBy) {
             data[column.column_name] = cookie?.user?.id;
+          } else if (column.uidt === UITypes.Order) {
+            const order = await this.getHighestOrderInTable();
+            data[column.column_name] = order;
           }
         }
         if (column.uidt === UITypes.LastModifiedTime) {
