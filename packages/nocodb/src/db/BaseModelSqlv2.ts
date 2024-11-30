@@ -89,6 +89,8 @@ const isPrimitiveType = (val) =>
 
 const JSON_COLUMN_TYPES = [UITypes.Button];
 
+const ORDER_STEP_INCREMENT = 1;
+
 export async function populatePk(
   context: NcContext,
   model: Model,
@@ -6869,17 +6871,13 @@ class BaseModelSqlv2 {
       return null;
     }
 
-    const step = '1.00000000000000000000';
-
     const orderQuery = await this.dbDriver(this.tnPath)
       .max(`${orderColumn.column_name} as max_order`)
       .first();
 
     const order = orderQuery ? orderQuery['max_order'] || '0' : '0';
 
-    const nextOrder = (parseFloat(order) + parseFloat(step)).toFixed(20);
-
-    return nextOrder;
+    return order + ORDER_STEP_INCREMENT;
   }
 
   // method for validating otpions if column is single/multi select
@@ -9787,6 +9785,7 @@ class BaseModelSqlv2 {
     cookie?: { user?: any; system?: boolean },
     // oldData uses title as key where as data uses column_name as key
     oldData?,
+    ncOrder?: number,
   ) {
     for (const column of this.model.columns) {
       if (
@@ -9810,7 +9809,7 @@ class BaseModelSqlv2 {
           } else if (column.uidt === UITypes.CreatedBy) {
             data[column.column_name] = cookie?.user?.id;
           } else if (column.uidt === UITypes.Order) {
-            const order = await this.getHighestOrderInTable();
+            const order = ncOrder ??  await this.getHighestOrderInTable();
             data[column.column_name] = order;
           }
         }
