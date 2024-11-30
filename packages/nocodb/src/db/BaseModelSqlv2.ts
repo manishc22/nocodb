@@ -14,6 +14,7 @@ import {
   isCreatedOrLastModifiedByCol,
   isCreatedOrLastModifiedTimeCol,
   isLinksOrLTAR,
+  isOrderCol,
   isSystemColumn,
   isVirtualCol,
   RelationTypes,
@@ -69,7 +70,6 @@ import { defaultLimitConfig } from '~/helpers/extractLimitAndOffset';
 import generateLookupSelectQuery from '~/db/generateLookupSelectQuery';
 import applyAggregation from '~/db/aggregation';
 import { chunkArray } from '~/utils/tsUtils';
-import { isOrderCol } from 'nocodb-sdk/build/main/lib/UITypes';
 
 dayjs.extend(utc);
 
