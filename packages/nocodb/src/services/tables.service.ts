@@ -504,6 +504,7 @@ export class TablesService {
         UITypes.LastModifiedTime,
         UITypes.CreatedBy,
         UITypes.LastModifiedBy,
+        UITypes.Order,
       ]) {
         const col = tableCreatePayLoad.columns.find(
           (c) => c.uidt === uidt,
@@ -528,6 +529,9 @@ export class TablesService {
             columnName = 'updated_by';
             columnTitle = 'nc_updated_by';
             break;
+          case 'Order':
+            columnName = 'order';
+            columnTitle = 'nc_order';
         }
 
         const colName = getUniqueColumnName(
